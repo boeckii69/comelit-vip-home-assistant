@@ -1,0 +1,3 @@
+authorize_remote_audio:
+  name: Authorize remote audio
+  description: Allow one external call within 30 seconds. Does not open the door or start audio. Requires the configured gateway.

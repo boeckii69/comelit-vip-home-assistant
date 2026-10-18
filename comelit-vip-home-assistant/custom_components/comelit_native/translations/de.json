@@ -1,0 +1,118 @@
+{
+  "title": "Comelit ViP Native",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Deine ViP-Anlage verbinden",
+        "description": "Community-Integration für den nativen ViP-LAN-Pfad; bisher an UT8020 + TP6842 bestätigt. Trage die Adressen deiner Anlage ein. Die eigene Slave-Adresse muss frei sein. Starte zunächst ohne SIP und richte Audio später über Konfigurieren ein. Das Kamerabild wird separat eingebunden. Einrichtungshilfe: {documentation_url}",
+        "data": {
+          "local_ip": "Home-Assistant-LAN-IP",
+          "crp_broadcast_ip": "LAN-Broadcast-IP für CRP",
+          "master_ip": "TP6842-LAN-IP",
+          "master_port": "Master-Port (Ausgangswert; CRP ermittelt den aktuellen Port)",
+          "entrance_ip": "UT8020-IP",
+          "entrance_port": "Außenstations-Port (Ausgangswert; CRP ermittelt den aktuellen Port)",
+          "master_address": "Master-ViP-Adresse",
+          "source_address": "Eigene ViP-Slave-Adresse",
+          "entrance_address": "Außenstation-ViP-Adresse",
+          "loxone_enabled": "Erkannte Rufe an Loxone senden",
+          "loxone_ip": "Loxone-IP (nur bei aktivierter Klingelweiterleitung)",
+          "loxone_port": "Loxone-UDP-Port",
+          "door_relay": "Türöffner-Relais (1 oder 2)",
+          "sip_enabled": "SIP-Audio für Loxone aktivieren",
+          "sip_port": "Lokaler SIP-Port (empfohlen: 5062)",
+          "sip_allowed_ips": "Erlaubte IPv4-Adressen der Loxone-App-Geräte, mit Komma trennen",
+          "remote_gateway_key": "Schlüssel des externen Audio-Gateways (leer = aus)",
+          "remote_auto_enabled": "Externes Audio automatisch annehmen (ohne Freigabeknopf)"
+        },
+        "data_description": {
+          "local_ip": "Feste IPv4-Adresse des HA-Hosts im Netz der Türanlage.",
+          "crp_broadcast_ip": "Broadcast-Adresse deines Subnetzes, nicht die Router-IP.",
+          "master_ip": "LAN-Adresse der TP6842. Keine WLAN-Adresse übernehmen.",
+          "entrance_ip": "LAN-Adresse der UT8020-Außenstation.",
+          "master_address": "Acht Ziffern; führende Nullen beibehalten.",
+          "source_address": "Master-Adresse plus eine freie Slave-Ziffer 1–9. Keine vorhandene Innenstation verdrängen.",
+          "entrance_address": "Achtstellige ViP-Adresse der Außenstation.",
+          "remote_gateway_key": "Nur für das optionale Audio-Gateway. Kein HA-Token und kein SIP-Passwort."
+        }
+      }
+    },
+    "error": {
+      "invalid_config": "Bitte IPv4-Adressen, Ports und ViP-Adressen prüfen. Die Slave-Adresse besteht aus der Master-Adresse plus einer Ziffer 1–9."
+    },
+    "abort": {
+      "already_configured": "Bereits eingerichtet.",
+      "single_instance_allowed": "Diese Version unterstützt genau eine native Verbindung."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Türöffner und Audio",
+        "description": "Lokales Audio funktioniert direkt über Loxone. Für externes Audio denselben Gateway-Schlüssel (32–128 Zeichen: Buchstaben, Ziffern, _ oder -) hier und im Add-on eintragen. Automatikmodus: Der normale Loxone-Hörerknopf startet das Gespräch ohne zusätzliche Freigabe. Externe SIP-Anrufer werden dabei nicht als Loxone-Nutzer authentifiziert; jeder, der deine Antisip-Adresse kennt, kann anrufen und Audio aktivieren. Ohne Automatik gilt weiterhin die einmalige Freigabe. Ein Gespräch gleichzeitig. Änderungen beenden ein laufendes SIP-Gespräch.",
+        "data": {
+          "door_relay": "Türöffner-Relais",
+          "sip_enabled": "SIP-Audio für Loxone aktivieren",
+          "sip_port": "Lokaler SIP-Port (empfohlen: 5062)",
+          "sip_allowed_ips": "Erlaubte IPv4-Adressen der Loxone-App-Geräte, mit Komma trennen",
+          "remote_gateway_key": "Schlüssel des externen Audio-Gateways (leer = aus)",
+          "remote_auto_enabled": "Externes Audio automatisch annehmen (ohne Freigabeknopf)"
+        }
+      }
+    },
+    "error": {
+      "invalid_relay": "Bitte Relais 1 oder 2 auswählen.",
+      "invalid_options": "Relais 1/2, SIP-Port und einzelne Geräte-IPv4-Adressen prüfen. Gateway-Schlüssel: leer oder 32–128 Zeichen, nur A–Z, a–z, 0–9, _ und -. Keine Leerzeichen oder anderen Sonderzeichen."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "doorbell": {
+        "name": "Klingel"
+      }
+    },
+    "event": {
+      "ring": {
+        "name": "Klingelereignis",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "ring": "Klingeln"
+            }
+          }
+        }
+      }
+    },
+    "sensor": {
+      "registration": {
+        "name": "Registrierung"
+      },
+      "call_state": {
+        "name": "Rufstatus"
+      },
+      "sip_state": {
+        "name": "SIP-Status"
+      }
+    },
+    "button": {
+      "open_door": {
+        "name": "Tür öffnen"
+      },
+      "answer_call": {
+        "name": "Ruf annehmen"
+      },
+      "hangup_call": {
+        "name": "Auflegen"
+      },
+      "allow_remote_audio": {
+        "name": "Audio extern freigeben"
+      }
+    }
+  },
+  "services": {
+    "authorize_remote_audio": {
+      "name": "Audio extern freigeben",
+      "description": "Erlaubt genau einen externen Gesprächsaufbau innerhalb von 30 Sekunden. Öffnet keine Tür und startet kein Gespräch. Erfordert das konfigurierte Audio-Gateway."
+    }
+  }
+}
