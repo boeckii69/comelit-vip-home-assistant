@@ -1,0 +1,41 @@
+name: Bug report / Fehler melden
+description: Report a reproducible issue without credentials or private images.
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include tokens, SIP passwords, gateway keys, home addresses, camera images or recordings. / Keine Zugangsdaten oder privaten Bilder veröffentlichen."
+  - type: textarea
+    id: environment
+    attributes:
+      label: Versions and hardware / Versionen und Geräte
+      description: HA, integration, gateway, panel/monitor firmware, Loxone app, phone OS.
+    validations:
+      required: true
+  - type: dropdown
+    id: route
+    attributes:
+      label: Route / Verbindungsweg
+      options:
+        - Local / Lokal
+        - External / Mobilfunk
+        - Registration or door release / Anmeldung oder Türöffner
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Expected and actual behavior / Erwartetes und tatsächliches Verhalten
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Sanitized errors and counters / Bereinigte Fehler und Zähler
+      render: text
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Before posting / Vor dem Absenden
+      options:
+        - label: I removed credentials and identifying installation data. / Zugangsdaten und identifizierende Anlagendaten sind entfernt.
+          required: true

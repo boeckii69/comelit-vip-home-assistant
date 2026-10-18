@@ -1,0 +1,20 @@
+name: Compatibility report / Kompatibilität
+description: Share a verified hardware/firmware combination.
+body:
+  - type: textarea
+    id: hardware
+    attributes:
+      label: Hardware, firmware and software versions
+    validations:
+      required: true
+  - type: textarea
+    id: results
+    attributes:
+      label: Functions actually verified
+      description: Separate ringing, door release, local listening/speaking, idle-call start and external audio. Report untested functions explicitly.
+    validations:
+      required: true
+  - type: textarea
+    id: caveats
+    attributes:
+      label: Limits or necessary settings (no credentials or installation addresses)
