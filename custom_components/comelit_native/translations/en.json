@@ -1,0 +1,118 @@
+{
+  "title": "Comelit ViP Native",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect your ViP installation",
+        "description": "Community integration for the native ViP LAN transport, reported working with UT8020 + TP6842. Enter your own network addresses. The slave address must be unused. Start with SIP disabled and configure audio later. The camera is configured separately. Setup guide: {documentation_url}",
+        "data": {
+          "local_ip": "Home Assistant LAN IP",
+          "crp_broadcast_ip": "CRP broadcast IP",
+          "master_ip": "TP6842 LAN IP",
+          "master_port": "Master port (initial value; CRP resolves the current port)",
+          "entrance_ip": "UT8020 LAN IP",
+          "entrance_port": "Entrance port (initial value; CRP resolves the current port)",
+          "master_address": "Master ViP address",
+          "source_address": "Own ViP slave address",
+          "entrance_address": "Entrance ViP address",
+          "loxone_enabled": "Forward doorbell events to Loxone",
+          "loxone_ip": "Loxone IP (only required for doorbell forwarding)",
+          "loxone_port": "Loxone UDP port",
+          "door_relay": "Door relay (1 or 2)",
+          "sip_enabled": "Enable SIP audio for Loxone",
+          "sip_port": "Local SIP port (recommended: 5062)",
+          "sip_allowed_ips": "Allowed Loxone app device IPv4 addresses, comma separated",
+          "remote_gateway_key": "External audio gateway key (empty = disabled)",
+          "remote_auto_enabled": "Accept external audio automatically (without an unlock button)"
+        },
+        "data_description": {
+          "local_ip": "Stable IPv4 address of the HA host on the intercom network.",
+          "crp_broadcast_ip": "Broadcast address of your subnet, not the router IP.",
+          "master_ip": "TP6842 Ethernet address, not its Wi-Fi address.",
+          "entrance_ip": "LAN address of the UT8020 entrance panel.",
+          "master_address": "Eight digits, including leading zeros.",
+          "source_address": "Master address followed by an unused slave digit 1–9. Do not replace an existing monitor.",
+          "entrance_address": "Eight-digit ViP address of the entrance panel.",
+          "remote_gateway_key": "Only for the optional audio gateway. Not a HA token or SIP password."
+        }
+      }
+    },
+    "error": {
+      "invalid_config": "Check IPv4 addresses, ports and ViP addresses. The slave identity is the master address plus an unused digit 1–9. Enabled SIP needs at least one allowed phone IP."
+    },
+    "abort": {
+      "already_configured": "Already configured.",
+      "single_instance_allowed": "Only one native connection is supported."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Door release and audio",
+        "description": "Local audio uses Loxone directly. For external audio, set the same gateway key (32–128 letters, digits, _ or -) here and in the app. Automatic mode allows the normal Loxone call button to start a conversation without a separate grant. External callers are not authenticated as Loxone users: anyone who knows your Antisip address can call and activate audio. Manual mode requires a one-use grant. One conversation at a time. Changing these options ends an active SIP call.",
+        "data": {
+          "door_relay": "Door relay (1 or 2)",
+          "sip_enabled": "Enable SIP audio for Loxone",
+          "sip_port": "Local SIP port (recommended: 5062)",
+          "sip_allowed_ips": "Allowed Loxone app device IPv4 addresses, comma separated",
+          "remote_gateway_key": "External audio gateway key (empty = disabled)",
+          "remote_auto_enabled": "Accept external audio automatically (without an unlock button)"
+        }
+      }
+    },
+    "error": {
+      "invalid_relay": "Select relay 1 or 2.",
+      "invalid_options": "Check relay, SIP port and individual device IPv4 addresses. Gateway key: empty or 32–128 characters from A–Z, a–z, 0–9, _ and -. No spaces."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "doorbell": {
+        "name": "Doorbell"
+      }
+    },
+    "event": {
+      "ring": {
+        "name": "Ring",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "ring": "Ring"
+            }
+          }
+        }
+      }
+    },
+    "sensor": {
+      "registration": {
+        "name": "Registration"
+      },
+      "call_state": {
+        "name": "Call state"
+      },
+      "sip_state": {
+        "name": "SIP status"
+      }
+    },
+    "button": {
+      "open_door": {
+        "name": "Open door"
+      },
+      "answer_call": {
+        "name": "Answer call"
+      },
+      "hangup_call": {
+        "name": "Hang up"
+      },
+      "allow_remote_audio": {
+        "name": "Authorize remote audio"
+      }
+    }
+  },
+  "services": {
+    "authorize_remote_audio": {
+      "name": "Authorize remote audio",
+      "description": "Allow one external call within 30 seconds. Does not release the door or start a call. Requires a configured audio gateway."
+    }
+  }
+}

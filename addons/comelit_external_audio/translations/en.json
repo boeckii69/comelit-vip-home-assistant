@@ -1,0 +1,44 @@
+{
+  "configuration": {
+    "sip_username": {
+      "name": "Antisip username",
+      "description": "Lowercase username of your SIP account."
+    },
+    "sip_password": {
+      "name": "Antisip password",
+      "description": "Keep local; never share in issues."
+    },
+    "bridge_key": {
+      "name": "Gateway key",
+      "description": "32–128 characters; must match the HA integration key."
+    },
+    "ha_ip": {
+      "name": "HA LAN IP",
+      "description": "Actual IPv4 address of the HA host."
+    },
+    "ha_sip_port": {
+      "name": "HA SIP port",
+      "description": "Integration port, usually 5062; not 5064/5065."
+    },
+    "local_network": {
+      "name": "Local network",
+      "description": "CIDR network containing the HA IP."
+    },
+    "public_media_ip": {
+      "name": "Public media IP",
+      "description": "Leave empty for automatic discovery."
+    },
+    "turn_server": {
+      "name": "TURN server",
+      "description": "Optional user-provided service; initially empty."
+    },
+    "turn_username": {
+      "name": "TURN username",
+      "description": "Only for a user-provided TURN service."
+    },
+    "turn_password": {
+      "name": "TURN password",
+      "description": "Only for a user-provided TURN service."
+    }
+  }
+}
