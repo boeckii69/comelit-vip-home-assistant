@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+secrets.yaml
+settings.json
+options.json
+*.pcap
+*.pcapng
+*.log
+*.zip
+.storage/
+research/
+node_modules/
+dist/
+.DS_Store
